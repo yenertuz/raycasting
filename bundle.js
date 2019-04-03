@@ -9,8 +9,8 @@ function display_intro(state) {
 
 function main() {
   var state = {};
-  var state.canvas = document.getElementById("root");
-  var state.context = state.canvas.getContext("2d");
+  state.canvas = document.getElementById("root");
+  state.context = state.canvas.getContext("2d");
   display_intro(state);
   start_game(state);
 }
