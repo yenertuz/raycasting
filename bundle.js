@@ -14,4 +14,5 @@ function main() {
   start_game();
 }
 
+console.log("about to start");
 main();
