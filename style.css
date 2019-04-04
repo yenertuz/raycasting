@@ -7,3 +7,21 @@ body {
   height: 100vh;
   width: 100vw;
 }
+
+#full_screen {
+  height: 100vh;
+  width: 100vw;
+  font-size: 30px;
+  text-align: left;
+  display: none;
+  background-color: orange;
+}
+
+#full_screen_text {
+  display: table-cell;
+  vertical-align: middle;
+  margin-left: auto;
+  width: 100%;
+  text-align: center;
+  color: black;
+}
