@@ -1,20 +1,38 @@
 function handle_flash(state) {
   let text_div = document.getElementById("full_screen");
   let text_span = document.getElementById("full_screen_text");
+  let change_color = (text_div, text_span) => {
+    if (text_div.style.backgroundColor == "orange") {
+      text_div.style.backgroundColor = "black";
+      text_span.style.color = "orange";
+    } else {
+      text_div.style.backgroundColor = "orange";
+      text_span.style.color = "black";
+    }
+  };
+  let interval_function = () => { change_color(text_div, text_span);   };
   state.canvas.style.display = "none";
   text_div.style.display = "table";
+  text_div.style.backgroundColor = "orange";
+  text_span.style.color = "black";
+  setTimeout(interval_function, 250);
+  setTimeout(interval_function, 500);
+  setTimeout(interval_function, 750);
+  setTimeout(interval_function, 1000);
+  setTimeout(interval_function, 1250);
+  setTimeout(interval_function, 1500);
+  setTimeout(interval_function, 1750);
+  setTimeout(interval_function, 2000);
+  setTimeout(interval_function, 2250);
 }
 
 function reassign_coefficient_and_next_cycle(state) {
   let handle_timeout = () => {
     draw_boxes_for_preview(state);
   };
-  let center_width = state.canvas.width / 2 - 140;
-  let center_height = state.canvas.height / 2 - 50;
-
   if (state.coefficient < 1) {
     state.coefficient += 0.2;
-    state.timeout = setTimeout(handle_timeout, 750);
+    state.timeout = setTimeout(handle_timeout, 500);
   } else {
     handle_flash(state);
   }
@@ -36,6 +54,12 @@ function draw_boxes_for_preview(state) {
   let row_pointer = 0;
   let column_pointer = 0;
 
+  if (state.coefficient >= 1) {
+    state.context.fillStyle = "orange";
+    state.context.fillRect(0, 0, state.canvas.width, state.canvas.height);
+    reassign_coefficient_and_next_cycle(state);
+    return ;
+  }
   while (row_pointer < state.canvas.height) {
     column_pointer = 0;
     while (column_pointer < state.canvas.width) {
