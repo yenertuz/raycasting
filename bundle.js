@@ -32,7 +32,7 @@ function reassign_coefficient_and_next_cycle(state) {
   };
   if (state.coefficient < 1) {
     state.coefficient += 0.2;
-    state.timeout = setTimeout(handle_timeout, 250);
+    state.timeout = setTimeout(handle_timeout, 400);
   } else {
     handle_flash(state);
   }
