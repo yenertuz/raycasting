@@ -1,3 +1,75 @@
+function get_left_and_right_screen_edges(user_row, user_column, angle) {
+  let hypothenus = 0.5;
+  let left_angle = 1.0472 + angle;
+  let right_angle = 2.0944 + angle;
+  let result_object = {};
+  
+  left_angle %= 6.28319;
+  right_angle %= 6.28319;
+  result_object.left_edge_row = hypothenus * Math.cos(left_angle);
+  result_object.left_edge_column = hypothenus * Math.sin(left_angle);
+  result_object.right_edge_row = hypothenus * Math.cos(right_angle);
+  result_object.left_edge_row = hypothenus * Math.sin(right_angle);
+  return (result_object);
+}
+
+function get_height_array(state) {
+  return (0);
+}
+
+function get_image_from_height_array(height_array) {
+  return (0);
+}
+
+function put_image(image, state) {
+  return (0);
+}
+
+function get_random_integer(min_inclusive, max_inclusive) {
+  return (Math.floor(Math.random() * (max_inclusive - min_inclusive + 1)) + min_inclusive);
+}
+
+function get_player_location(state) {
+  let row_index = get_random_integer(0, 20);
+  let column_index = get_random_integer(0, 20);
+  while (state.map[row_index][column_index] != 0) {
+    row_index = get_random_integer(0, 20);
+    column_index = get_random_integer(0, 20);
+  }
+  row_index += 0.5;
+  column_index += 0.5;
+  state.player_row = row_index;
+  state.player_column = column_index;
+}
+
+function get_preliminary_map() {
+  let preliminary_map = Array(20).fill(0);
+  preliminary_map.forEach(
+    (element, index) => {
+      preliminary_map[index] = Array(20).fill(0);
+    }
+  );
+  let remaining_wall_count = 80;
+  let row_index = Math.floor(Math.random() * 20);
+  let column_index = Math.floor(Math.random() * 20);
+  while (remaining_wall_count > 0) {
+    if (preliminary_map[row_index][column_index] == 0) {
+      preliminary_map[row_index][column_index] = 1;
+      remaining_wall_count -= 1;
+    }
+    row_index = Math.floor(Math.random() * 20);
+    column_index = Math.floor(Math.random() * 20);
+  }
+  return (preliminary_map);
+}
+
+function prepare_for_game(state) {
+  state.is_game_started = 0;
+  state.map = get_preliminary_map();
+  get_player_location(state);
+  state.counterclockwise_angle_from_north = 0;
+}
+
 function handle_flash(state) {
   let text_div = document.getElementById("full_screen");
   let text_span = document.getElementById("full_screen_text");
@@ -95,7 +167,9 @@ function main() {
   var state = get_state_for_main();
 
   window.addEventListener("resize", () => { handle_resize(state); });
+  window.state = state;
   state.coefficient = 0;
+  setTimeout(() => { prepare_for_game(state); } , 100);
   draw_boxes_for_preview(state, 1.15);
 }
 
