@@ -32,22 +32,17 @@ function reassign_coefficient_and_next_cycle(state) {
   };
   if (state.coefficient < 1) {
     state.coefficient += 0.2;
-    state.timeout = setTimeout(handle_timeout, 500);
+    state.timeout = setTimeout(handle_timeout, 250);
   } else {
     handle_flash(state);
   }
 }
 
 function get_random_color(state) {
-  let colors = ["black", "white", "red", "blue", "green", "yellow", "purple", "cyan"];
-  let first_random = Math.random();
-  let second_random = Math.floor(Math.random() * 8);
+  let colors = ["black", "white", "red", "blue", "green", "yellow", "purple", "cyan", "orange"];
+  let random_index = Math.floor(Math.random() * 9);
 
-  if (state.coefficient > first_random) {
-    return ("orange");
-  } else {
-    return (colors[second_random]);
-  }
+  return (colors[random_index]);
 }
 
 function draw_boxes_for_preview(state) {
@@ -55,8 +50,6 @@ function draw_boxes_for_preview(state) {
   let column_pointer = 0;
 
   if (state.coefficient >= 1) {
-    state.context.fillStyle = "orange";
-    state.context.fillRect(0, 0, state.canvas.width, state.canvas.height);
     reassign_coefficient_and_next_cycle(state);
     return ;
   }
