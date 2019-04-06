@@ -144,7 +144,7 @@ function get_state_for_main() {
   state.context = state.canvas.getContext("2d");
   state.canvas.width = state.canvas.clientWidth;
   state.canvas.height = state.canvas.clientHeight;
-  state.row_height = state.canvas.height / 10;
+  state.row_height = state.canvas.height / 20;
   return (state);
 }
 
@@ -156,7 +156,7 @@ function clear_canvas(state) {
 function handle_resize(state) {
   state.canvas.width = state.canvas.clientWidth;
   state.canvas.height = state.canvas.clientHeight;
-  state.row_height = state.canvas.height / 10;
+  state.row_height = state.canvas.height / 20;
   clear_canvas(state);
   state.context.font = "30px Arial";
   state.context.fillStyle = "black";
