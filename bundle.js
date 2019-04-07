@@ -1,28 +1,133 @@
-function get_left_and_right_screen_edges(user_row, user_column, angle) {
+function check_location(row, column, map) {
+  if (row < 0 || column < 0 || row >= 20 || column >= 20) {
+    return (2);
+  }
+  row = Math.floor(row);
+  column = Math.floor(column);
+  if (map[row][column] == 0) {
+    return (0);
+  }
+  return (1);
+}
+
+function get_height(screen_object, state) {
+  let screen_row = screen_object.row;
+  let screen_column = screen_object.column;
+  let counter = 0;
+  let row_distance = screen_row - state.player_row;
+  let column_distance = screen_column - state.player_column;
+  let row_increment = row_distance / 10;
+  let column_increment = column_distance / 10;
+  let new_row = screen_row + counter * row_increment;
+  let new_column = screen_column * column_increment;
+  let location_indicator = check_location(new_row, new_column, state.map);
+  let height = 0;
+  let new_row_distance = 0;
+
+  while (location_indicator == 0) {
+    counter += 1;
+    new_row = screen_row + counter * row_increment;
+    new_column = screen_column * column_increment;
+    location_indicator = check_location(new_row, new_column, state.map);
+  }
+  if (location_indicator == 2) {
+    return (0);
+  }
+  new_row_distance = new_row - state.player_row;
+  state.cross_sections.push([new_row, new_column]);
+  height = row_distance / new_row_distance;
+  return (height);
+}
+
+function start_game(state) {
+  if (state.is_ready != 2) {
+    console.log("CANNOT START GAME YET");
+    return ;
+  }
+  console.log("GAME STARTED");
+  clear_canvas(state);
+  document.getElementById("full_screen").style = "none";
+  state.canvas.style.display = "initial";
+  put_image(state);
+}
+
+function get_left_and_right_screen_edges(state) {
+  let user_row = state.player_row;
+  let user_column = state.player_column;
+  let angle = state.angle;
   let hypothenus = 0.5;
-  let left_angle = 1.0472 + angle;
-  let right_angle = 2.0944 + angle;
-  let result_object = {};
+  let right_angle = 1.0472 + angle; // 60 degrees
+  let left_angle = 2.0944 + angle; // 120 degrees
   
-  left_angle %= 6.28319;
-  right_angle %= 6.28319;
-  result_object.left_edge_row = hypothenus * Math.cos(left_angle);
-  result_object.left_edge_column = hypothenus * Math.sin(left_angle);
-  result_object.right_edge_row = hypothenus * Math.cos(right_angle);
-  result_object.left_edge_row = hypothenus * Math.sin(right_angle);
-  return (result_object);
+  left_angle %= 6.28319; // make it less than 360 degrees
+  right_angle %= 6.28319; // make it less than 360 degrees
+  state.left_edge_column = user_column + hypothenus * Math.cos(left_angle);
+  state.left_edge_row = user_row + hypothenus * Math.sin(left_angle);
+  state.right_edge_column = user_column + hypothenus * Math.cos(right_angle);
+  state.right_edge_row = user_row + hypothenus * Math.sin(right_angle);
+}
+
+function get_split_screen(state) {
+  let column_difference = state.right_edge_column - state.left_edge_column;
+  let row_difference = state.right_edge_row - state.left_edge_row;
+  let column_increment = column_difference / state.canvas.width;
+  let row_increment = row_difference / state.canvas.width;
+  let screen_array = [];
+  let temporary_object = {};
+  let width_counter = 0;
+
+  while (width_counter < state.canvas.width) {
+    temporary_object = {};
+    temporary_object.row = state.left_edge_row + row_increment * width_counter;
+    temporary_object.column = state.left_edge_column + column_increment * width_counter;
+    screen_array.push(JSON.parse(JSON.stringify(temporary_object)));
+    width_counter += 1;
+  }
+  state.screen_array = screen_array;
 }
 
 function get_height_array(state) {
-  return (0);
+  let height_array = [];
+  let height = 0;
+  
+  state.cross_sections = [];
+  state.screen_array.forEach(
+    (element) => {
+      height = get_height(element, state);
+      height_array.push(height);
+    }
+  )
+  state.height_array = height_array;
 }
 
 function get_image_from_height_array(height_array) {
   return (0);
 }
 
-function put_image(image, state) {
-  return (0);
+function put_image(state) {
+  state.height_array.forEach(
+    (element, index) => {
+      let total_height = state.canvas.height;
+      let blue = (1 - element) * total_height / 2;
+      let green = blue;
+      let red = total_height - blue - green;
+      state.context.strokeStyle = "cyan";
+      state.context.beginPath();
+      state.context.moveTo(index, 0);
+      state.context.lineTo(index, blue);
+      state.context.stroke();
+      state.context.strokeStyle = "red";
+      state.context.beginPath();
+      state.context.moveTo(index, blue);
+      state.context.lineTo(index, blue + red);
+      state.context.stroke();
+      state.context.strokeStyle = "green";
+      state.context.beginPath();
+      state.context.moveTo(index, blue + red);
+      state.context.lineTo(index, total_height);
+      state.context.stroke();
+    }
+  );
 }
 
 function get_random_integer(min_inclusive, max_inclusive) {
@@ -32,7 +137,8 @@ function get_random_integer(min_inclusive, max_inclusive) {
 function get_player_location(state) {
   let row_index = get_random_integer(0, 20);
   let column_index = get_random_integer(0, 20);
-  while (state.map[row_index][column_index] != 0) {
+  let map = state.map;
+  while (map[row_index][column_index] != 0) {
     row_index = get_random_integer(0, 20);
     column_index = get_random_integer(0, 20);
   }
@@ -64,10 +170,15 @@ function get_preliminary_map() {
 }
 
 function prepare_for_game(state) {
-  state.is_game_started = 0;
+  state.is_ready = 0;
   state.map = get_preliminary_map();
   get_player_location(state);
-  state.counterclockwise_angle_from_north = 0;
+  state.angle = 0;
+  get_left_and_right_screen_edges(state);
+  get_split_screen(state);
+  get_height_array(state);
+  state.is_ready += 1;
+  setTimeout( () => {start_game(state); }, 100);
 }
 
 function handle_flash(state) {
@@ -83,6 +194,7 @@ function handle_flash(state) {
     }
   };
   let interval_function = () => { change_color(text_div, text_span);   };
+  let increment_state_is_ready = () => { state.is_ready += 1; };
   state.canvas.style.display = "none";
   text_div.style.display = "table";
   text_div.style.backgroundColor = "orange";
@@ -96,6 +208,8 @@ function handle_flash(state) {
   setTimeout(interval_function, 1750);
   setTimeout(interval_function, 2000);
   setTimeout(interval_function, 2250);
+  setTimeout(increment_state_is_ready, 2250);
+  setTimeout(() => { start_game(state); }, 2500);
 }
 
 function reassign_coefficient_and_next_cycle(state) {
@@ -169,8 +283,10 @@ function main() {
   window.addEventListener("resize", () => { handle_resize(state); });
   window.state = state;
   state.coefficient = 0;
+  state.is_ready = 0;
   setTimeout(() => { prepare_for_game(state); } , 100);
   draw_boxes_for_preview(state, 1.15);
+  // BIND KEYS
 }
 
 main();
