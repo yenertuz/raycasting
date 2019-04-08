@@ -42,6 +42,9 @@ function get_height(screen_object, state) {
 function start_game(state) {
   if (state.is_ready < 2) {
     return ;
+  } else if (state.is_arrows_out != 1) {
+    state.is_arrows_out = 1;
+    document.getElementById("arrow-img").style.display = "initial";
   }
   clear_canvas(state);
   document.getElementById("full_screen").style = "none";
@@ -315,7 +318,7 @@ state.right_edge_column = new_state.right_edge_column;
 console.log({
   angle: state.angle,
 
-})
+});
 get_split_screen(state);
 get_height_array(state);
 clear_canvas(state);
@@ -385,7 +388,6 @@ function main() {
   bind_keys(state);
   window.state = state;
   state.coefficient = 0;
-  state.is_ready = 0;
   setTimeout(() => { prepare_for_game(state); } , 100);
   draw_boxes_for_preview(state, 1.15);
 }

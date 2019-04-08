@@ -36,6 +36,7 @@ body {
   height: 100%;
   width: 100%;
   touch-action: manipulation;
+  display: none;
 }
 
 #arrow-div {
