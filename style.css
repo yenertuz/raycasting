@@ -39,13 +39,17 @@ body {
 #arrow-div {
   position: absolute;
   height: 10vh;
-  width: 10vh;
+  width: 15vh;
   top: 80vh;
   left: 3vw;
   border: 1px solid black;
 }
 
 #up-arrow { 
-  position: relative;
-
+  position: absolute;
+  height: 5vh;
+  width: 5vh;
+  top: 80vh;
+  left: 5.8vw;
+  background-color: red;
 }
