@@ -11,15 +11,19 @@ function check_location(row, column, map) {
 }
 
 function get_height(screen_object, state) {
+  if (state.debug == 1)
+  {
+    debugger;
+  }
   let screen_row = screen_object.row;
   let screen_column = screen_object.column;
   let counter = 0;
   let row_distance = screen_row - state.player_row;
   let column_distance = screen_column - state.player_column;
-  let row_increment = row_distance / 10;
-  let column_increment = column_distance / 10;
+  let row_increment = row_distance / 40;
+  let column_increment = column_distance / 40;
   let new_row = screen_row + counter * row_increment;
-  let new_column = screen_column * column_increment;
+  let new_column = screen_column + counter * column_increment;
   let location_indicator = check_location(new_row, new_column, state.map);
   let height = 0;
   let new_row_distance = 0;
@@ -27,24 +31,22 @@ function get_height(screen_object, state) {
   while (location_indicator == 0) {
     counter += 1;
     new_row = screen_row + counter * row_increment;
-    new_column = screen_column * column_increment;
+    new_column = screen_column + counter * column_increment;
     location_indicator = check_location(new_row, new_column, state.map);
   }
   if (location_indicator == 2) {
     return (0);
   }
-  new_row_distance = new_row - state.player_row;
+  new_row_distance = new_row - state.player_row; 
   state.cross_sections.push([new_row, new_column]);
   height = row_distance / new_row_distance;
   return (height);
 }
 
 function start_game(state) {
-  if (state.is_ready != 2) {
-    console.log("CANNOT START GAME YET");
+  if (state.is_ready < 2) {
     return ;
   }
-  console.log("GAME STARTED");
   clear_canvas(state);
   document.getElementById("full_screen").style = "none";
   state.canvas.style.display = "initial";
@@ -65,6 +67,13 @@ function get_left_and_right_screen_edges(state) {
   state.left_edge_row = user_row + hypothenus * Math.sin(left_angle);
   state.right_edge_column = user_column + hypothenus * Math.cos(right_angle);
   state.right_edge_row = user_row + hypothenus * Math.sin(right_angle);
+  console.log("PRINTING SCREEN EDGES");
+  console.log({
+    left_edge_column: state.left_edge_column,
+    left_edge_row: state.left_edge_row,
+    right_edge_column: state.right_edge_column,
+    right_edge_row: state.right_edge_row
+  });
 }
 
 function get_split_screen(state) {
@@ -135,12 +144,12 @@ function get_random_integer(min_inclusive, max_inclusive) {
 }
 
 function get_player_location(state) {
-  let row_index = get_random_integer(0, 20);
-  let column_index = get_random_integer(0, 20);
+  let row_index = get_random_integer(0, 19);
+  let column_index = get_random_integer(0, 19);
   let map = state.map;
-  while (map[row_index][column_index] != 0) {
-    row_index = get_random_integer(0, 20);
-    column_index = get_random_integer(0, 20);
+  while (state.map[row_index][column_index] != 0) {
+    row_index = get_random_integer(0, 19);
+    column_index = get_random_integer(0, 19);
   }
   row_index += 0.5;
   column_index += 0.5;
@@ -170,10 +179,10 @@ function get_preliminary_map() {
 }
 
 function prepare_for_game(state) {
-  state.is_ready = 0;
-  state.map = get_preliminary_map();
-  get_player_location(state);
-  state.angle = 0;
+  if (state.map == undefined) {
+    state.map = get_preliminary_map();
+    get_player_location(state);
+  }
   get_left_and_right_screen_edges(state);
   get_split_screen(state);
   get_height_array(state);
@@ -272,21 +281,42 @@ function handle_resize(state) {
   state.canvas.height = state.canvas.clientHeight;
   state.row_height = state.canvas.height / 20;
   clear_canvas(state);
-  state.context.font = "30px Arial";
-  state.context.fillStyle = "black";
-  state.context.fillText("Resize handled", 10, 50);
+  put_image(state);
+}
+
+function bind_keys(state) {
+  let keypress_handler = (event) => {
+    let character = event.charCode || event.keyCode;
+    let string = String.fromCharCode(character);
+
+    if (string == "a" || "d") {
+      event.preventDefault();
+      if (string == "a") {
+        state.angle += 0.785398 / 4;
+      } else {
+        state.angle -= 0.785398 / 4;
+      }
+      state.angle %= 6.28319;
+      console.log(state.angle);
+      prepare_for_game(state);
+    }
+  };
+
+  window.addEventListener("keypress", keypress_handler);
 }
 
 function main() {
   var state = get_state_for_main();
 
+  state.is_ready = 0;
+  state.angle = 0;
   window.addEventListener("resize", () => { handle_resize(state); });
+  bind_keys(state);
   window.state = state;
   state.coefficient = 0;
   state.is_ready = 0;
   setTimeout(() => { prepare_for_game(state); } , 100);
   draw_boxes_for_preview(state, 1.15);
-  // BIND KEYS
 }
 
 main();
