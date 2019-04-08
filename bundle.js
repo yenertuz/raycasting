@@ -347,6 +347,26 @@ function bind_keys(state) {
   };
 
   window.addEventListener("keypress", keypress_handler);
+  document.getElementById("up-arrow").onclick = up_arrow;
+  document.getElementById("down-arrow").onclick = down_arrow;
+  document.getElementById("left-arrow").onclick = left_arrow;
+  document.getElementById("right-arrow").onclick = right_arrow;
+}
+
+function up_arrow() {
+  alert("UP ARROW");
+}
+
+function down_arrow() {
+  alert("DOWN ARROW");
+}
+
+function left_arrow() {
+  alert("LEFT ARROW");
+}
+
+function right_arrow() {
+  alert("RIGHT ARROW");
 }
 
 function main() {
