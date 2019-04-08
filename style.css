@@ -25,3 +25,11 @@ body {
   text-align: center;
   color: black;
 }
+
+#arrow-img {
+  position: absolute;
+  height: 10vh;
+  width: 10vh;
+  top: 85vh;
+  left: 3vw;
+}

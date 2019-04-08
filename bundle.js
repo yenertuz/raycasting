@@ -60,9 +60,9 @@ function get_left_and_right_screen_edges(state) {
   left_angle %= 6.28319; // make it less than 360 degrees
   right_angle %= 6.28319; // make it less than 360 degrees
   state.left_edge_column = user_column + hypothenus * Math.cos(left_angle);
-  state.left_edge_row = user_row + hypothenus * Math.sin(left_angle);
+  state.left_edge_row = user_row - hypothenus * Math.sin(left_angle);
   state.right_edge_column = user_column + hypothenus * Math.cos(right_angle);
-  state.right_edge_row = user_row + hypothenus * Math.sin(right_angle);
+  state.right_edge_row = user_row - hypothenus * Math.sin(right_angle);
   console.log("PRINTING SCREEN EDGES");
   console.log({
     left_edge_column: state.left_edge_column,
@@ -314,7 +314,7 @@ state.right_edge_row = new_state.right_edge_row;
 state.right_edge_column = new_state.right_edge_column;
 console.log({
   angle: state.angle,
-  
+
 })
 get_split_screen(state);
 get_height_array(state);
