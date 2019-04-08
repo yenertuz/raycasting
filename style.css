@@ -27,9 +27,25 @@ body {
 }
 
 #arrow-img {
-  position: absolute;
+  /* position: absolute;
   height: 10vh;
   width: 10vh;
   top: 85vh;
+  left: 3vw; */
+  height: 100%;
+  width: 100%;
+}
+
+#arrow-div {
+  position: absolute;
+  height: 10vh;
+  width: 10vh;
+  top: 80vh;
   left: 3vw;
+  border: 1px solid black;
+}
+
+#up-arrow { 
+  position: relative;
+
 }
