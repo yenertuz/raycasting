@@ -6,6 +6,7 @@ body {
   border: 1px solid black;
   height: 100vh;
   width: 100vw;
+  touch-action: manipulation;
 }
 
 #full_screen {
@@ -34,6 +35,7 @@ body {
   left: 3vw; */
   height: 100%;
   width: 100%;
+  touch-action: manipulation;
 }
 
 #arrow-div {
@@ -42,6 +44,7 @@ body {
   width: 15vh;
   top: 80vh;
   left: 15px;
+  touch-action: manipulation;
 }
 
 #up-arrow { 
@@ -50,6 +53,7 @@ body {
   width: 5vh;
   top: 80vh;
   left: 50px;
+  touch-action: manipulation;
 }
 
 #down-arrow { 
@@ -58,6 +62,7 @@ body {
   width: 5vh;
   top: 85vh;
   left: calc(15px + 5vh);
+  touch-action: manipulation;
 }
 
 #left-arrow { 
@@ -66,7 +71,7 @@ body {
   width: 5vh;
   top: 85vh;
   left: 15px;
-
+  touch-action: manipulation;
 }
 
 #right-arrow { 
@@ -75,4 +80,5 @@ body {
   width: 5vh;
   top: 85vh;
   left: calc(15px + 10vh);
+  touch-action: manipulation;
 }
