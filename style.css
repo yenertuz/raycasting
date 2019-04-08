@@ -41,8 +41,7 @@ body {
   height: 10vh;
   width: 15vh;
   top: 80vh;
-  left: 3vw;
-  border: 1px solid black;
+  left: 10px;
 }
 
 #up-arrow { 
@@ -50,7 +49,7 @@ body {
   height: 5vh;
   width: 5vh;
   top: 80vh;
-  left: 5.8vw;
+  left: 50px;
 }
 
 #down-arrow { 
@@ -58,7 +57,7 @@ body {
   height: 5vh;
   width: 5vh;
   top: 85vh;
-  left: 5.8vw;
+  left: calc(10px + 5vh);
 }
 
 #left-arrow { 
@@ -66,7 +65,8 @@ body {
   height: 5vh;
   width: 5vh;
   top: 85vh;
-  left: 2.8vw;
+  left: 10px;
+
 }
 
 #right-arrow { 
@@ -74,5 +74,5 @@ body {
   height: 5vh;
   width: 5vh;
   top: 85vh;
-  left: 8.8vw;
+  left: calc(10px + 10vh);
 }
