@@ -335,7 +335,6 @@ function bind_keys(state) {
         state.angle -= 0.785398 / 4;
       }
       state.angle %= 6.28319;
-      console.log(state.angle);
       prepare_for_game(state);
     } else if (string == "w") {
       event.preventDefault();
@@ -353,20 +352,28 @@ function bind_keys(state) {
   document.getElementById("right-arrow").onclick = right_arrow;
 }
 
-function up_arrow() {
-  alert("UP ARROW");
+function left_arrow(e) {
+  e.preventDefault();
+  state.angle += 0.785398 / 4;
+  state.angle %= 6.28319;
+  prepare_for_game(state);
 }
 
-function down_arrow() {
-  alert("DOWN ARROW");
+function right_arrow(e) {
+  e.preventDefault();
+  state.angle -= 0.785398 / 4;
+  state.angle %= 6.28319;
+  prepare_for_game(state);
 }
 
-function left_arrow() {
-  alert("LEFT ARROW");
+function up_arrow(e) {
+  e.preventDefault();
+  move_up_or_down(state, -0.25);
 }
 
-function right_arrow() {
-  alert("RIGHT ARROW");
+function down_arrow(e) {
+  e.preventDefault();
+  move_up_or_down(state, 0.25);
 }
 
 function main() {

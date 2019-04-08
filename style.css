@@ -41,7 +41,7 @@ body {
   height: 10vh;
   width: 15vh;
   top: 80vh;
-  left: 10px;
+  left: 15px;
 }
 
 #up-arrow { 
@@ -57,7 +57,7 @@ body {
   height: 5vh;
   width: 5vh;
   top: 85vh;
-  left: calc(10px + 5vh);
+  left: calc(15px + 5vh);
 }
 
 #left-arrow { 
@@ -65,7 +65,7 @@ body {
   height: 5vh;
   width: 5vh;
   top: 85vh;
-  left: 10px;
+  left: 15px;
 
 }
 
@@ -74,5 +74,5 @@ body {
   height: 5vh;
   width: 5vh;
   top: 85vh;
-  left: calc(10px + 10vh);
+  left: calc(15px + 10vh);
 }
