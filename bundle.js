@@ -11,10 +11,6 @@ function check_location(row, column, map) {
 }
 
 function get_height(screen_object, state) {
-  if (state.debug == 1)
-  {
-    debugger;
-  }
   let screen_row = screen_object.row;
   let screen_column = screen_object.column;
   let counter = 0;
@@ -284,12 +280,54 @@ function handle_resize(state) {
   put_image(state);
 }
 
+function move_up_or_down(state, multiplier) {
+let new_state = {
+  angle: state.angle, 
+  player_row: state.player_row, 
+  player_column: state.player_column,
+  left_edge_row: state.left_edge_row,
+  left_edge_column: state.left_edge_column,
+  right_edge_row: state.right_edge_row, 
+  right_edge_column: state.right_edge_column
+};
+
+new_state.player_row += multiplier * Math.cos(new_state.angle);
+new_state.player_column += multiplier * Math.sin(new_state.angle);
+if (check_location(new_state.player_row, new_state.player_column, state.map) != 0) {
+  return ;
+}
+new_state.left_edge_row += multiplier * Math.cos(new_state.angle);
+new_state.left_edge_column += multiplier * Math.sin(new_state.angle);
+if (check_location(new_state.left_edge_row, new_state.left_edge_column, state.map) != 0) {
+  return ;
+}
+new_state.right_edge_row += multiplier * Math.cos(new_state.angle);
+new_state.right_edge_column += multiplier * Math.sin(new_state.angle);
+if (check_location(new_state.right_edge_row, new_state.right_edge_column, state.map) != 0) {
+  return ;
+}
+state.player_row = new_state.player_row;
+state.player_column = new_state.player_column;
+state.left_edge_row = new_state.left_edge_row;
+state.left_edge_column = new_state.left_edge_column;
+state.right_edge_row = new_state.right_edge_row;
+state.right_edge_column = new_state.right_edge_column;
+console.log({
+  angle: state.angle,
+  
+})
+get_split_screen(state);
+get_height_array(state);
+clear_canvas(state);
+put_image(state);
+}
+
 function bind_keys(state) {
   let keypress_handler = (event) => {
     let character = event.charCode || event.keyCode;
     let string = String.fromCharCode(character);
 
-    if (string == "a" || "d") {
+    if (string == "a" || string == "d") {
       event.preventDefault();
       if (string == "a") {
         state.angle += 0.785398 / 4;
@@ -299,6 +337,12 @@ function bind_keys(state) {
       state.angle %= 6.28319;
       console.log(state.angle);
       prepare_for_game(state);
+    } else if (string == "w") {
+      event.preventDefault();
+      move_up_or_down(state, -0.25);
+    } else if (string == "s") {
+      event.preventDefault();
+      move_up_or_down(state, 0.25);
     }
   };
 
