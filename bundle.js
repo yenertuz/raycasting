@@ -341,28 +341,6 @@ function bind_keys(state) {
       right_arrow(event);
     }
   };
-    
-    
-// //     let character = event.charCode || event.keyCode;
-// //     let string = String.fromCharCode(character);
-
-// //     if (string == "a" || string == "d") {
-// //       event.preventDefault();
-// //       if (string == "a") {
-// //         state.angle += 0.785398 / 4;
-// //       } else {
-// //         state.angle -= 0.785398 / 4;
-// //       }
-// //       state.angle %= 6.28319;
-// //       prepare_for_game(state);
-// //     } else if (string == "w") {
-// //       event.preventDefault();
-// //       move_up_or_down(state, -0.25);
-// //     } else if (string == "s") {
-// //       event.preventDefault();
-// //       move_up_or_down(state, 0.25);
-// //     }
-//   };
 
   window.addEventListener("keydown", keypress_handler);
   window.addEventListener("keypress", keypress_handler);
