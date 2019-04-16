@@ -327,28 +327,44 @@ put_image(state);
 
 function bind_keys(state) {
   let keypress_handler = (event) => {
-    let character = event.charCode || event.keyCode;
-    let string = String.fromCharCode(character);
-
-    if (string == "a" || string == "d") {
-      event.preventDefault();
-      if (string == "a") {
-        state.angle += 0.785398 / 4;
-      } else {
-        state.angle -= 0.785398 / 4;
-      }
-      state.angle %= 6.28319;
-      prepare_for_game(state);
-    } else if (string == "w") {
-      event.preventDefault();
-      move_up_or_down(state, -0.25);
-    } else if (string == "s") {
-      event.preventDefault();
-      move_up_or_down(state, 0.25);
+    
+    if (event.keyCode == 119 || event.keyCode == 39) {
+      up_arrow(event);
+    }
+    else if (event.keyCode == 97 || event.keyCode == 37) {
+      left_arrow(event);
+    }
+    else if (event.keyCode == 115 || event.keyCode == 40) {
+      down_arrow(event);
+    }
+    else if (event.keyCode == 100 || event.keyCode == 39) {
+      right_arrow(event);
     }
   };
+    
+    
+// //     let character = event.charCode || event.keyCode;
+// //     let string = String.fromCharCode(character);
 
-  window.addEventListener("keypress", keypress_handler);
+// //     if (string == "a" || string == "d") {
+// //       event.preventDefault();
+// //       if (string == "a") {
+// //         state.angle += 0.785398 / 4;
+// //       } else {
+// //         state.angle -= 0.785398 / 4;
+// //       }
+// //       state.angle %= 6.28319;
+// //       prepare_for_game(state);
+// //     } else if (string == "w") {
+// //       event.preventDefault();
+// //       move_up_or_down(state, -0.25);
+// //     } else if (string == "s") {
+// //       event.preventDefault();
+// //       move_up_or_down(state, 0.25);
+// //     }
+//   };
+
+  window.addEventListener("keydown", keypress_handler);
   document.getElementById("up-arrow").onclick = up_arrow;
   document.getElementById("down-arrow").onclick = down_arrow;
   document.getElementById("left-arrow").onclick = left_arrow;
