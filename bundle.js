@@ -328,16 +328,16 @@ put_image(state);
 function bind_keys(state) {
   let keypress_handler = (event) => {
     
-    if (event.keyCode == 119 || event.keyCode == 38) {
+    if (event.keyCode == 87 || event.keyCode == 38) {
       up_arrow(event);
     }
-    else if (event.keyCode == 97 || event.keyCode == 37) {
+    else if (event.keyCode == 65 || event.keyCode == 37) {
       left_arrow(event);
     }
-    else if (event.keyCode == 115 || event.keyCode == 40) {
+    else if (event.keyCode == 83 || event.keyCode == 40) {
       down_arrow(event);
     }
-    else if (event.keyCode == 100 || event.keyCode == 39) {
+    else if (event.keyCode == 68 || event.keyCode == 39) {
       right_arrow(event);
     }
   };
