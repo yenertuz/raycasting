@@ -328,7 +328,7 @@ put_image(state);
 function bind_keys(state) {
   let keypress_handler = (event) => {
     
-    if (event.keyCode == 119 || event.keyCode == 39) {
+    if (event.keyCode == 119 || event.keyCode == 38) {
       up_arrow(event);
     }
     else if (event.keyCode == 97 || event.keyCode == 37) {
@@ -365,6 +365,7 @@ function bind_keys(state) {
 //   };
 
   window.addEventListener("keydown", keypress_handler);
+  window.addEventListener("keypress", keypress_handler);
   document.getElementById("up-arrow").onclick = up_arrow;
   document.getElementById("down-arrow").onclick = down_arrow;
   document.getElementById("left-arrow").onclick = left_arrow;
